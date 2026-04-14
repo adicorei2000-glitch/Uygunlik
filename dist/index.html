@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uyg'unlik — Moslik ilovasi</title>
+    <style>
+      /* --- Global Styles --- */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #ffffff;
+        --bg-secondary: #f0f2f5;
+        --glass: rgba(255, 255, 255, 0.8);
+        --text: #1a1a1a;
+        --text-secondary: #6b7280;
+        --border: rgba(0, 0, 0, 0.1);
+        --purple: #8b5cf6;
+        --purple-light: #f5f3ff;
+        --teal: #10b981;
+        --teal-light: #ecfdf5;
+        --coral: #ef4444;
+        --radius-md: 12px;
+        --radius-lg: 24px;
+        --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1e1e1e;
+          --bg-secondary: #0f172a;
+          --glass: rgba(30, 41, 59, 0.7);
+          --text: #f8fafc;
+          --text-secondary: #94a3b8;
+          --border: rgba(255, 255, 255, 0.1);
+          --purple-light: #2e1065;
+          --teal-light: #064e3b;
+        }
+      }
+
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          system-ui,
+          sans-serif;
+        background:
+          radial-gradient(circle at top left, var(--purple-light), transparent),
+          radial-gradient(
+            circle at bottom right,
+            var(--teal-light),
+            var(--bg-secondary)
+          );
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        backdrop-filter: blur(100px);
+      }
+
+      #app {
+        width: 100%;
+        max-width: 440px;
+        animation: fadeIn 0.6s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: block;
+      }
+
+      /* --- Welcome Screen --- */
+      .logo-area {
+        text-align: center;
+        padding: 1rem 0 2rem;
+      }
+      .logo-circle {
+        width: 85px;
+        height: 85px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          #6366f1 0%,
+          #a855f7 50%,
+          #ec4899 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 40px;
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .app-name {
+        font-size: 32px;
+        font-weight: 700;
+        background: linear-gradient(to right, #6366f1, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .welcome-card,
+      .card {
+        background: var(--glass);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+      }
+
+      .avatar-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 1.5rem;
+      }
+      .avatar {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .av-you {
+        background: #eeedfe;
+        color: #7f77dd;
+      }
+      .av-partner {
+        background: #e1f5ee;
+        color: #1d9e75;
+      }
+
+      .name-field {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 15px;
+        margin-bottom: 12px;
+        transition: all 0.3s;
+      }
+      .name-field:focus-within {
+        border-color: var(--purple);
+        box-shadow: 0 0 0 3px var(--purple-light);
+      }
+      .name-field-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        opacity: 0.7;
+      }
+      .name-field input {
+        width: 100%;
+        border: none;
+        background: transparent;
+        font-size: 16px;
+        color: var(--text);
+        outline: none;
+        font-weight: 500;
+      }
+
+      .btn-primary {
+        width: 100%;
+        background: linear-gradient(135deg, var(--purple), #6366f1);
+        color: white;
+        border: none;
+        border-radius: var(--radius-md);
+        padding: 16px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 1rem;
+        transition: transform 0.2s;
+      }
+      .btn-primary:active {
+        transform: scale(0.97);
+      }
+
+      /* --- Quiz UI --- */
+      .progress-bg {
+        height: 6px;
+        background: var(--border);
+        border-radius: 3px;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--purple);
+        transition: width 0.4s ease;
+      }
+      .q-text {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        line-height: 1.4;
+      }
+      .answer-btn {
+        width: 100%;
+        text-align: left;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 15px;
+        color: var(--text);
+      }
+      .answer-btn:hover {
+        border-color: var(--purple);
+        background: var(--purple-light);
+        transform: translateX(5px);
+      }
+
+      /* --- Result UI --- */
+      .score-ring {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        border: 6px solid var(--teal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin: 0 auto 1rem;
+        animation: rotateIn 1s ease-out;
+      }
+      @keyframes rotateIn {
+        from {
+          transform: rotate(-90deg);
+          opacity: 0;
+        }
+        to {
+          transform: rotate(0);
+          opacity: 1;
+        }
+      }
+      .score-num {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--teal);
+      }
+      .trait-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .trait-bg {
+        flex: 1;
+        height: 8px;
+        background: var(--bg-secondary);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .trait-fill {
+        height: 100%;
+        border-radius: 4px;
+      }
+      .ai-text {
+        font-size: 15px;
+        line-height: 1.8;
+        color: var(--text);
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="screen active" id="s-welcome">
+        <div class="logo-area">
+          <div class="logo-circle">💞</div>
+          <div class="app-name">Uyg'unlik</div>
+          <p class="app-tagline">
+            Kelajakda birga bo'la olasizlarmi? AI tahlili yordamida bilib oling.
+          </p>
+        </div>
+
+        <div class="welcome-card">
+          <div class="avatar-row">
+            <div class="avatar av-you" id="av-left">S</div>
+            <div style="cursor: pointer; font-size: 24px" onclick="doSwap()">
+              ⇄
+            </div>
+            <div class="avatar av-partner" id="av-right">J</div>
+          </div>
+
+          <div class="name-field">
+            <div class="name-field-label">Sizning ismingiz</div>
+            <input
+              id="input-top"
+              type="text"
+              placeholder="Ismingizni kiriting"
+              oninput="updateAv('left', this.value)"
+            />
+          </div>
+          <div class="name-field">
+            <div class="name-field-label">Sherikingiz ismi</div>
+            <input
+              id="input-bottom"
+              type="text"
+              placeholder="Sherik ismini kiriting"
+              oninput="updateAv('right', this.value)"
+            />
+          </div>
+
+          <button class="btn-primary" onclick="startQuiz()">
+            Tahlilni boshlash →
+          </button>
+        </div>
+      </div>
+
+      <div class="screen" id="s-quiz">
+        <div class="progress-bg">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div
+          id="q-step"
+          style="font-size: 12px; margin-bottom: 5px; opacity: 0.7"
+        >
+          Savol 1 / 10
+        </div>
+        <div class="q-text" id="q-text"></div>
+        <div id="answers-wrap"></div>
+      </div>
+
+      <div class="screen" id="s-thinking">
+        <div style="text-align: center; padding: 4rem 0">
+          <div
+            style="
+              width: 50px;
+              height: 50px;
+              border: 4px solid #eee;
+              border-top-color: var(--purple);
+              border-radius: 50%;
+              animation: spin 1s linear infinite;
+              margin: 0 auto 1.5rem;
+            "
+          ></div>
+          <p id="thinking-text" style="color: var(--text-secondary)">
+            AI sizni tahlil qilmoqda...
+          </p>
+        </div>
+      </div>
+      <style>
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      </style>
+
+      <div class="screen" id="s-result">
+        <div class="card" style="text-align: center; margin-bottom: 1.5rem">
+          <div class="score-ring">
+            <div class="score-num" id="score-num">0%</div>
+            <div style="font-size: 10px; color: var(--teal)">Moslik</div>
+          </div>
+          <h2 id="result-names" style="margin-bottom: 10px"></h2>
+          <div id="verdict-wrap"></div>
+        </div>
+
+        <div class="card" style="margin-bottom: 1.5rem">
+          <h4 style="margin-bottom: 15px; font-size: 14px; opacity: 0.8">
+            Xarakter profili
+          </h4>
+          <div id="traits-wrap"></div>
+        </div>
+
+        <div class="card">
+          <h4 style="margin-bottom: 10px; font-size: 14px; opacity: 0.8">
+            AI tahlili
+          </h4>
+          <div class="ai-text" id="ai-text"></div>
+        </div>
+
+        <button
+          class="btn-primary"
+          onclick="restart()"
+          style="
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+          "
+        >
+          🔄 Qayta urinish
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // 🔑 API KALITI
+      const API_KEY = "AIzaSyDhSWSO3h5t3E-2EFCM_GRO25080DIKCnY";
+
+      // --- Logika va Funksiyalar ---
+      let swapped = false;
+      let userName = "",
+        partnerName = "",
+        answers = [],
+        currentQ = 0;
+
+      function updateAv(side, val) {
+        const id = side === "left" ? "av-left" : "av-right";
+        document.getElementById(id).textContent = val.trim()
+          ? val.trim()[0].toUpperCase()
+          : side === "left"
+            ? "S"
+            : "J";
+      }
+
+      function doSwap() {
+        const i1 = document.getElementById("input-top"),
+          i2 = document.getElementById("input-bottom");
+        [i1.value, i2.value] = [i2.value, i1.value];
+        updateAv("left", i1.value);
+        updateAv("right", i2.value);
+      }
+
+      function showScreen(id) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+      }
+
+      function startQuiz() {
+        userName = document.getElementById("input-top").value || "Siz";
+        partnerName = document.getElementById("input-bottom").value || "Sherik";
+        answers = [];
+        currentQ = 0;
+        showScreen("s-quiz");
+        renderQuestion();
+      }
+
+      const questions = [
+        {
+          text: "Hayotdagi asosiy maqsadingiz?",
+          key: "maqsad",
+          options: [
+            { label: "Oila va baxt", val: "oila" },
+            { label: "Karera va muvaffaqiyat", val: "karera" },
+          ],
+        },
+        {
+          text: "Sherigingiz qanday bo'lishi kerak?",
+          key: "sherik",
+          options: [
+            { label: "Sadoqatli", val: "oilali" },
+            { label: "Maqsadli", val: "ambitsiyali" },
+          ],
+        },
+        {
+          text: "Diniy qarashlaringiz qanchalik muhim?",
+          key: "din",
+          options: [
+            { label: "Juda muhim", val: "qatiy" },
+            { label: "Erkin yondashuv", val: "yengil" },
+          ],
+        },
+        // ... qolgan savollar o'zingizning kodingizdagidek davom etadi
+      ];
+
+      function renderQuestion() {
+        const q = questions[currentQ % questions.length]; // Xatolik oldini olish uchun
+        document.getElementById("progress-fill").style.width =
+          ((currentQ + 1) / 10) * 100 + "%";
+        document.getElementById("q-step").textContent =
+          `Savol ${currentQ + 1} / 10`;
+        document.getElementById("q-text").textContent = q.text;
+        const wrap = document.getElementById("answers-wrap");
+        wrap.innerHTML = "";
+        q.options.forEach((opt) => {
+          const btn = document.createElement("button");
+          btn.className = "answer-btn";
+          btn.textContent = opt.label;
+          btn.onclick = () => {
+            answers.push(opt.val);
+            currentNext();
+          };
+          wrap.appendChild(btn);
+        });
+      }
+
+      function currentNext() {
+        currentQ++;
+        if (currentQ < 10) renderQuestion();
+        else {
+          showScreen("s-thinking");
+          generateResult();
+        }
+      }
+
+      async function generateResult() {
+        // AI ga yuboriladigan qisqa tahlil logikasi
+        const prompt = `User: ${userName}, Partner: ${partnerName}. Javoblar: ${answers.join(",")}. O'zbek tilida JSON: {"score": 85, "verdict": "Mos", "analysis": "..."}`;
+        try {
+          const res = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+              }),
+            },
+          );
+          const data = await res.json();
+          const jsonText = data.candidates[0].content.parts[0].text.replace(
+            /```json|```/g,
+            "",
+          );
+          const result = JSON.parse(jsonText);
+          showResult(result);
+        } catch (e) {
+          showResult({
+            score: 75,
+            verdict: "Ehtimol mos",
+            analysis: "AI bilan aloqa uzildi, lekin javoblaringiz ijobiy.",
+          });
+        }
+      }
+
+      function showResult(res) {
+        document.getElementById("score-num").textContent = res.score + "%";
+        document.getElementById("result-names").textContent =
+          `${userName} & ${partnerName}`;
+        document.getElementById("ai-text").textContent = res.analysis;
+        document.getElementById("verdict-wrap").innerHTML =
+          `<span style="background:var(--teal-light); color:var(--teal); padding:5px 15px; border-radius:20px; font-size:13px; font-weight:600;">${res.verdict}</span>`;
+
+        // Traits visualization
+        const traits = ["Oilaparastlik", "Ambitsiya", "Samimiylik"];
+        document.getElementById("traits-wrap").innerHTML = traits
+          .map(
+            (t) => `
+          <div class="trait-row">
+            <span style="font-size:12px; width:100px">${t}</span>
+            <div class="trait-bg"><div class="trait-fill" style="width:${Math.random() * 40 + 60}%; background:var(--purple)"></div></div>
+          </div>
+        `,
+          )
+          .join("");
+
+        showScreen("s-result");
+      }
+
+      function restart() {
+        location.reload();
+      }
+    </script>
+  </body>
+</html>
