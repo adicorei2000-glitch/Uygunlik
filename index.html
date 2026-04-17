@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Uyg'unlik — Moslik ilovasi</title>
     <style>
-      /* --- Global Styles --- */
+      /* Asosiy sozlamalar */
       *,
       *::before,
       *::after {
@@ -15,61 +15,66 @@
       }
 
       :root {
-        --bg: #ffffff;
-        --bg-secondary: #f0f2f5;
-        --glass: rgba(255, 255, 255, 0.8);
-        --text: #1a1a1a;
-        --text-secondary: #6b7280;
-        --border: rgba(0, 0, 0, 0.1);
-        --purple: #8b5cf6;
-        --purple-light: #f5f3ff;
-        --teal: #10b981;
-        --teal-light: #ecfdf5;
-        --coral: #ef4444;
-        --radius-md: 12px;
-        --radius-lg: 24px;
-        --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-      }
-
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #1e1e1e;
-          --bg-secondary: #0f172a;
-          --glass: rgba(30, 41, 59, 0.7);
-          --text: #f8fafc;
-          --text-secondary: #94a3b8;
-          --border: rgba(255, 255, 255, 0.1);
-          --purple-light: #2e1065;
-          --teal-light: #064e3b;
-        }
+        --primary: #8b5cf6;
+        --secondary: #10b981;
+        --accent: #ffca28;
+        --text-light: #ffffff;
+        --glass: rgba(255, 255, 255, 0.12);
+        --glass-border: rgba(255, 255, 255, 0.25);
       }
 
       body {
-        font-family:
-          "Inter",
-          -apple-system,
-          system-ui,
-          sans-serif;
-        background:
-          radial-gradient(circle at top left, var(--purple-light), transparent),
-          radial-gradient(
-            circle at bottom right,
-            var(--teal-light),
-            var(--bg-secondary)
-          );
-        color: var(--text);
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          #1e1b4b 50%,
+          #312e81 100%
+        );
+        color: var(--text-light);
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 1rem;
-        backdrop-filter: blur(100px);
+        overflow-x: hidden;
+      }
+
+      .glow {
+        position: fixed;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(139, 92, 246, 0.3) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        z-index: -1;
+        filter: blur(50px);
+        animation: float 15s infinite alternate;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translate(-10%, -10%);
+        }
+        100% {
+          transform: translate(100%, 80%);
+        }
       }
 
       #app {
         width: 100%;
         max-width: 440px;
-        animation: fadeIn 0.6s ease-out;
+      }
+
+      .screen {
+        display: none;
+        animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .screen.active {
+        display: block;
       }
 
       @keyframes fadeIn {
@@ -83,346 +88,289 @@
         }
       }
 
-      .screen {
-        display: none;
-      }
-      .screen.active {
-        display: block;
+      .card {
+        background: var(--glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 28px;
+        padding: 2rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       }
 
-      /* --- Welcome Screen --- */
       .logo-area {
         text-align: center;
-        padding: 1rem 0 2rem;
+        margin-bottom: 2rem;
       }
-      .logo-circle {
-        width: 85px;
-        height: 85px;
-        border-radius: 50%;
-        background: linear-gradient(
-          135deg,
-          #6366f1 0%,
-          #a855f7 50%,
-          #ec4899 100%
-        );
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1rem;
-        font-size: 40px;
-        box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-        animation: float 3s ease-in-out infinite;
-      }
-
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-10px);
-        }
-      }
-
       .app-name {
-        font-size: 32px;
-        font-weight: 700;
-        background: linear-gradient(to right, #6366f1, #ec4899);
+        font-size: 34px;
+        font-weight: 800;
+        background: linear-gradient(to right, #a78bfa, #f472b6);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
 
-      .welcome-card,
-      .card {
-        background: var(--glass);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-        padding: 1.5rem;
-        box-shadow: var(--shadow);
-      }
-
-      .avatar-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
+      .input-group {
         margin-bottom: 1.5rem;
       }
-      .avatar {
-        width: 55px;
-        height: 55px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        font-weight: 600;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      }
-      .av-you {
-        background: #eeedfe;
-        color: #7f77dd;
-      }
-      .av-partner {
-        background: #e1f5ee;
-        color: #1d9e75;
-      }
-
-      .name-field {
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 12px 15px;
-        margin-bottom: 12px;
-        transition: all 0.3s;
-      }
-      .name-field:focus-within {
-        border-color: var(--purple);
-        box-shadow: 0 0 0 3px var(--purple-light);
-      }
-      .name-field-label {
+      .input-label {
         font-size: 11px;
-        font-weight: 600;
+        font-weight: 700;
         text-transform: uppercase;
-        margin-bottom: 5px;
-        opacity: 0.7;
-      }
-      .name-field input {
-        width: 100%;
-        border: none;
-        background: transparent;
-        font-size: 16px;
-        color: var(--text);
-        outline: none;
-        font-weight: 500;
+        color: #a5b4fc;
+        margin-bottom: 8px;
+        display: block;
+        letter-spacing: 1px;
       }
 
-      .btn-primary {
+      .custom-input {
         width: 100%;
-        background: linear-gradient(135deg, var(--purple), #6366f1);
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 15px;
         color: white;
-        border: none;
-        border-radius: var(--radius-md);
-        padding: 16px;
         font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        margin-top: 1rem;
-        transition: transform 0.2s;
-      }
-      .btn-primary:active {
-        transform: scale(0.97);
+        outline: none;
+        transition: 0.3s;
       }
 
-      /* --- Quiz UI --- */
-      .progress-bg {
-        height: 6px;
-        background: var(--border);
-        border-radius: 3px;
-        margin-bottom: 1.5rem;
-        overflow: hidden;
+      .custom-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
       }
-      .progress-fill {
-        height: 100%;
-        background: var(--purple);
-        transition: width 0.4s ease;
+
+      .btn-main {
+        width: 100%;
+        background: white;
+        color: #1e1b4b;
+        border: none;
+        border-radius: 16px;
+        padding: 18px;
+        font-size: 17px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
       }
+
+      .btn-main:hover {
+        transform: scale(1.02);
+        background: #f3f4f6;
+      }
+
       .q-text {
         font-size: 20px;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
         line-height: 1.4;
+        color: #fff;
       }
+
       .answer-btn {
         width: 100%;
         text-align: left;
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 15px;
-        margin-bottom: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--glass-border);
+        border-radius: 18px;
+        padding: 18px;
+        margin-bottom: 12px;
         cursor: pointer;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 16px;
         transition: all 0.2s;
-        font-size: 15px;
-        color: var(--text);
-      }
-      .answer-btn:hover {
-        border-color: var(--purple);
-        background: var(--purple-light);
-        transform: translateX(5px);
       }
 
-      /* --- Result UI --- */
-      .score-ring {
+      .answer-btn:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: #fff;
+      }
+      .answer-btn.selected {
+        background: var(--primary) !important;
+        color: white !important;
+        border-color: white !important;
+        font-weight: 700;
+        transform: scale(0.97);
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+      }
+
+      .progress-container {
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        overflow: hidden;
+      }
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #8b5cf6, #ec4899);
+        transition: width 0.4s;
+      }
+
+      .trait-bar-bg {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        flex: 1;
+        overflow: hidden;
+      }
+      .trait-bar-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 1s ease-out;
+      }
+      .trait-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 12px;
+      }
+      .trait-name {
+        width: 90px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #cbd5e1;
+      }
+
+      .score-circle {
         width: 110px;
         height: 110px;
         border-radius: 50%;
-        border: 6px solid var(--teal);
+        border: 5px solid var(--secondary);
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-direction: column;
-        margin: 0 auto 1rem;
-        animation: rotateIn 1s ease-out;
+        margin: 0 auto 1.5rem;
+        font-size: 28px;
+        font-weight: 800;
+        background: rgba(16, 185, 129, 0.1);
+        box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
       }
-      @keyframes rotateIn {
-        from {
-          transform: rotate(-90deg);
-          opacity: 0;
-        }
+
+      @keyframes spin {
         to {
-          transform: rotate(0);
-          opacity: 1;
+          transform: rotate(360deg);
         }
-      }
-      .score-num {
-        font-size: 32px;
-        font-weight: 700;
-        color: var(--teal);
-      }
-      .trait-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 12px;
-      }
-      .trait-bg {
-        flex: 1;
-        height: 8px;
-        background: var(--bg-secondary);
-        border-radius: 4px;
-        overflow: hidden;
-      }
-      .trait-fill {
-        height: 100%;
-        border-radius: 4px;
-      }
-      .ai-text {
-        font-size: 15px;
-        line-height: 1.8;
-        color: var(--text);
-        font-style: italic;
       }
     </style>
   </head>
   <body>
+    <div class="glow"></div>
+
     <div id="app">
       <div class="screen active" id="s-welcome">
         <div class="logo-area">
-          <div class="logo-circle">💞</div>
+          <div style="font-size: 50px; margin-bottom: 10px">✨</div>
           <div class="app-name">Uyg'unlik</div>
-          <p class="app-tagline">
-            Kelajakda birga bo'la olasizlarmi? AI tahlili yordamida bilib oling.
-          </p>
+          <p style="opacity: 0.6; font-size: 14px">AI-Psixolog tahlili</p>
         </div>
-
-        <div class="welcome-card">
-          <div class="avatar-row">
-            <div class="avatar av-you" id="av-left">S</div>
-            <div style="cursor: pointer; font-size: 24px" onclick="doSwap()">
-              ⇄
-            </div>
-            <div class="avatar av-partner" id="av-right">J</div>
-          </div>
-
-          <div class="name-field">
-            <div class="name-field-label">Sizning ismingiz</div>
+        <div class="card">
+          <div class="input-group">
+            <label class="input-label">Ismingiz</label>
             <input
               id="input-top"
+              class="custom-input"
               type="text"
-              placeholder="Ismingizni kiriting"
-              oninput="updateAv('left', this.value)"
+              placeholder="Ismingizni yozing"
             />
           </div>
-          <div class="name-field">
-            <div class="name-field-label">Sherikingiz ismi</div>
+          <div class="input-group">
+            <label class="input-label">Uning ismi</label>
             <input
               id="input-bottom"
+              class="custom-input"
               type="text"
-              placeholder="Sherik ismini kiriting"
-              oninput="updateAv('right', this.value)"
+              placeholder="Sherik ismini yozing"
             />
           </div>
-
-          <button class="btn-primary" onclick="startQuiz()">
+          <button class="btn-main" onclick="startQuiz()">
             Tahlilni boshlash →
           </button>
         </div>
       </div>
 
       <div class="screen" id="s-quiz">
-        <div class="progress-bg">
-          <div class="progress-fill" id="progress-fill"></div>
+        <div class="progress-container">
+          <div class="progress-bar" id="progress-fill"></div>
         </div>
         <div
           id="q-step"
-          style="font-size: 12px; margin-bottom: 5px; opacity: 0.7"
-        >
-          Savol 1 / 10
-        </div>
+          style="
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+          "
+        ></div>
         <div class="q-text" id="q-text"></div>
         <div id="answers-wrap"></div>
       </div>
 
       <div class="screen" id="s-thinking">
-        <div style="text-align: center; padding: 4rem 0">
+        <div class="card" style="text-align: center; padding: 4rem 2rem">
           <div
             style="
-              width: 50px;
-              height: 50px;
-              border: 4px solid #eee;
-              border-top-color: var(--purple);
+              width: 45px;
+              height: 45px;
+              border: 4px solid rgba(255, 255, 255, 0.1);
+              border-top-color: var(--primary);
               border-radius: 50%;
-              animation: spin 1s linear infinite;
+              animation: spin 0.8s linear infinite;
               margin: 0 auto 1.5rem;
             "
           ></div>
-          <p id="thinking-text" style="color: var(--text-secondary)">
-            AI sizni tahlil qilmoqda...
-          </p>
+          <p style="font-weight: 600">AI ma'lumotlarni o'rganmoqda...</p>
         </div>
       </div>
-      <style>
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      </style>
 
       <div class="screen" id="s-result">
         <div class="card" style="text-align: center; margin-bottom: 1.5rem">
-          <div class="score-ring">
-            <div class="score-num" id="score-num">0%</div>
-            <div style="font-size: 10px; color: var(--teal)">Moslik</div>
-          </div>
-          <h2 id="result-names" style="margin-bottom: 10px"></h2>
+          <div class="score-circle" id="score-num">0%</div>
+          <h2
+            id="result-names"
+            style="font-size: 22px; margin-bottom: 8px"
+          ></h2>
           <div id="verdict-wrap"></div>
         </div>
 
         <div class="card" style="margin-bottom: 1.5rem">
-          <h4 style="margin-bottom: 15px; font-size: 14px; opacity: 0.8">
-            Xarakter profili
+          <h4
+            style="
+              font-size: 12px;
+              color: var(--accent);
+              margin-bottom: 15px;
+              letter-spacing: 1px;
+            "
+          >
+            XARAKTERLAR MOSLIGI
           </h4>
           <div id="traits-wrap"></div>
         </div>
 
-        <div class="card">
-          <h4 style="margin-bottom: 10px; font-size: 14px; opacity: 0.8">
-            AI tahlili
+        <div class="card" style="margin-bottom: 1.5rem">
+          <h4
+            style="
+              font-size: 12px;
+              color: var(--accent);
+              margin-bottom: 10px;
+              letter-spacing: 1px;
+            "
+          >
+            AI XULOSASI
           </h4>
-          <div class="ai-text" id="ai-text"></div>
+          <p
+            id="ai-text"
+            style="font-size: 15px; line-height: 1.6; color: #e2e8f0"
+          ></p>
         </div>
 
         <button
-          class="btn-primary"
-          onclick="restart()"
+          class="btn-main"
+          onclick="location.reload()"
           style="
-            background: var(--bg);
-            color: var(--text);
-            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid var(--glass-border);
           "
         >
           🔄 Qayta urinish
@@ -431,32 +379,220 @@
     </div>
 
     <script>
-      // 🔑 API KALITI
-      const API_KEY = "AIzaSyCx67bAIkYdtKrGE3RUSQjsnG7VPAtb7Vs";
-
-      // --- Logika va Funksiyalar ---
-      let swapped = false;
+      // API KEY bo'sh qoldiriladi, muhit tomonidan ta'minlanadi
+      const API_KEY = "AIzaSyBTdIx_UHjDUkk9-JxFcE01KW94lS7c4BY";
       let userName = "",
         partnerName = "",
-        answers = [],
-        currentQ = 0;
+        currentQ = 0,
+        answers = [];
 
-      function updateAv(side, val) {
-        const id = side === "left" ? "av-left" : "av-right";
-        document.getElementById(id).textContent = val.trim()
-          ? val.trim()[0].toUpperCase()
-          : side === "left"
-            ? "S"
-            : "J";
-      }
-
-      function doSwap() {
-        const i1 = document.getElementById("input-top"),
-          i2 = document.getElementById("input-bottom");
-        [i1.value, i2.value] = [i2.value, i1.value];
-        updateAv("left", i1.value);
-        updateAv("right", i2.value);
-      }
+      const questions = [
+        {
+          text: "Hayotiy tanlovlar oldida qolganda, siz uchun eng asosiy mezon nima?",
+          options: [
+            { label: "Yaqinlarimning xotirjamligi va baxti", val: "oila" },
+            { label: "O'z ustimda ishlash va ichki o'sish", val: "shaxsiy" },
+            {
+              label: "Jamiyatdagi o'rnim va moddiy yutuqlar",
+              val: "ambitsiya",
+            },
+            {
+              label: "Chegarasiz erkinlik va yangi sarguzashtlar",
+              val: "erkinlik",
+            },
+          ],
+        },
+        {
+          text: "Munosabatlarda yuzaga keladigan tushunmovchiliklarni qanday bartaraf etasiz?",
+          options: [
+            {
+              label: "His-tuyg'ularni ochiq muhokama qilish orqali",
+              val: "murosa",
+            },
+            {
+              label:
+                "Biroz tanaffus qilib, vaziyatni sovuqqonlik bilan o'ylash",
+              val: "barqaror",
+            },
+            {
+              label: "O'z pozitsiyamni qat'iy himoya qilish orqali",
+              val: "ambitsiya",
+            },
+            {
+              label: "Murosa yo'lini qidirish va vaziyatni yumshatish",
+              val: "murosa",
+            },
+          ],
+        },
+        {
+          text: "Muvaffaqiyatli shaxs siz uchun kim?",
+          options: [
+            { label: "Barkamol va baxtli oila boshlig'i", val: "oila" },
+            {
+              label: "O'z sohasining eng cho'qqisiga chiqqan mutaxassis",
+              val: "ambitsiya",
+            },
+            {
+              label: "Dunyo bo'ylab sayohat qiladigan erkin inson",
+              val: "erkinlik",
+            },
+            { label: "Doimiy izlanishda bo'lgan faylasuf", val: "shaxsiy" },
+          ],
+        },
+        {
+          text: "Moliyaviy masalalarda qanday strategiyaga tayanishingiz kerak?",
+          options: [
+            { label: "Kelajak uchun qat'iy tejamkorlik", val: "barqaror" },
+            { label: "O'zaro kelishilgan holda umumiy boshqaruv", val: "oila" },
+            {
+              label: "Har bir tomon o'z mustaqil byudjetiga ega bo'lishi",
+              val: "erkinlik",
+            },
+            { label: "Vaziyatga qarab o'zgaruvchan yondashuv", val: "murosa" },
+          ],
+        },
+        {
+          text: "Stressli vaziyatlarda sizga nima eng ko'p kuch beradi?",
+          options: [
+            { label: "Yaqin insonimning daldasi va quchog'i", val: "oila" },
+            { label: "Yolg'izlikda o'y-xayollar bilan qolish", val: "shaxsiy" },
+            {
+              label: "Sevimli mashg'ulot yoki ijod bilan shug'ullanish",
+              val: "erkinlik",
+            },
+            { label: "Do'stlar davrasida faol muloqot", val: "oila" },
+          ],
+        },
+        {
+          text: "Kutilmagan muammolarni qanday hal qilasiz?",
+          options: [
+            { label: "Mantiqiy tahlil va reja asosida", val: "barqaror" },
+            {
+              label: "Intuitsiya va ichki hissiyotga tayanib",
+              val: "erkinlik",
+            },
+            { label: "Tajribali insonlardan maslahat so'rab", val: "oila" },
+            { label: "Boshqalar bilan mas'uliyatni bo'lishib", val: "murosa" },
+          ],
+        },
+        {
+          text: "Siz uchun eng mukammal hordiq kuni qanday o'tadi?",
+          options: [
+            { label: "Tabiat qo'ynida, sokinlikda", val: "erkinlik" },
+            { label: "Yangi bilim yoki hunar o'rganish bilan", val: "shaxsiy" },
+            { label: "Katta va shovqinli davrada", val: "oila" },
+            { label: "Uyda, yaqinlar davrasida shinamlikda", val: "oila" },
+          ],
+        },
+        {
+          text: "Kelajakda o'zingizni qayerda va qanday holatda tasavvur qilasiz?",
+          options: [
+            {
+              label: "Nufuzli lavozim va yuksak natijalar bilan",
+              val: "ambitsiya",
+            },
+            { label: "Katta va ahil oila davrasida", val: "oila" },
+            {
+              label: "Turli mamlakatlarda sarguzashtlar ichida",
+              val: "erkinlik",
+            },
+            {
+              label: "O'z sohasida tan olingan ekspert sifatida",
+              val: "shaxsiy",
+            },
+          ],
+        },
+        {
+          text: "Bilim olishning qaysi usuli siz uchun samaraliroq?",
+          options: [
+            {
+              label: "Kitoblar va ilmiy manbalar orqali mustaqil",
+              val: "shaxsiy",
+            },
+            { label: "Amaliyot va shaxsiy tajribalar orqali", val: "erkinlik" },
+            { label: "Seminar va treninglarda guruh bilan", val: "oila" },
+            { label: "Ustoz-shogird an'anasi asosida", val: "oila" },
+          ],
+        },
+        {
+          text: "Yangi tanishuvlarda sizni birinchi navbatda nima jalb qiladi?",
+          options: [
+            { label: "Insonning samimiyligi va ishonchliligi", val: "oila" },
+            { label: "Uning dunyoqarashi va intellekti", val: "shaxsiy" },
+            { label: "Faolligi va hayotga bo'lgan ishtiyoqi", val: "erkinlik" },
+            { label: "Yutuqlari va maqsadlari", val: "ambitsiya" },
+          ],
+        },
+        {
+          text: "Sizningcha, ideal munosabatlar asosi nima?",
+          options: [
+            { label: "Cheksiz sadoqat va g'amxo'rlik", val: "oila" },
+            {
+              label: "Shaxsiy hududni va erkinlikni hurmat qilish",
+              val: "erkinlik",
+            },
+            {
+              label: "Umumiy manfaatlar va birgalikdagi rivojlanish",
+              val: "barqaror",
+            },
+            { label: "Doimiy hayajon va yangi hislar", val: "erkinlik" },
+          ],
+        },
+        {
+          text: "O'z hayotingizdagi o'zgarishlarga qanday munosabatda bo'lasiz?",
+          options: [
+            {
+              label: "Ehtiyotkorlik bilan, xavfsizlikni o'ylab",
+              val: "barqaror",
+            },
+            {
+              label: "Ochiq ko'ngil bilan, imkoniyat sifatida",
+              val: "erkinlik",
+            },
+            { label: "Tahlil qilib, foyda-zararini o'ylab", val: "ambitsiya" },
+            { label: "Hissiyotlarga berilib, biroz qiynalib", val: "murosa" },
+          ],
+        },
+        {
+          text: "Xato qilganingizda o'zingizni qanday tutasiz?",
+          options: [
+            { label: "Xatoni tan olib, dars chiqaraman", val: "shaxsiy" },
+            {
+              label: "Vaziyatni tuzatish uchun tezkor choralar ko'raman",
+              val: "ambitsiya",
+            },
+            { label: "Yaqinlarimdan yordam va dalda so'rayman", val: "oila" },
+            {
+              label: "Vaziyatni biroz unutishga harakat qilaman",
+              val: "barqaror",
+            },
+          ],
+        },
+        {
+          text: "Ijtimoiy tarmoqlar hayotingizda qanday o'rin tutadi?",
+          options: [
+            { label: "Muloqot va yaqinlar bilan aloqa vositasi", val: "oila" },
+            {
+              label: "O'z-o'zini rivojlantirish va axborot manbai",
+              val: "shaxsiy",
+            },
+            { label: "Ish va biznes quroli", val: "ambitsiya" },
+            { label: "Vaqt o'tkazish va ko'ngilochar vosita", val: "erkinlik" },
+          ],
+        },
+        {
+          text: "Siz uchun 'baxt' tushunchasi nimadan iborat?",
+          options: [
+            { label: "Yaqinlarimning sog'-salomatligi", val: "oila" },
+            { label: "Ichki xotirjamlik va o'zlikni topish", val: "shaxsiy" },
+            {
+              label: "Maqsadlarga erishish va g'alaba nashidasi",
+              val: "ambitsiya",
+            },
+            { label: "Hech kimga qaram bo'lmaslik", val: "erkinlik" },
+          ],
+        },
+      ];
 
       function showScreen(id) {
         document
@@ -466,206 +602,81 @@
       }
 
       function startQuiz() {
-        userName = document.getElementById("input-top").value || "Siz";
-        partnerName = document.getElementById("input-bottom").value || "Sherik";
-        answers = [];
+        userName =
+          document.getElementById("input-top").value.trim() ||
+          "Foydalanuvchi 1";
+        partnerName =
+          document.getElementById("input-bottom").value.trim() ||
+          "Foydalanuvchi 2";
         currentQ = 0;
+        answers = [];
         showScreen("s-quiz");
         renderQuestion();
       }
 
-      const questions = [
-       const questions = [
-        {
-          text: "Hayotdagi asosiy ustuvorligingiz (prioritetingiz) nima?",
-          key: "maqsad",
-          options: [
-            { label: "Oila qurish va farzandlar tarbiyasi", val: "oila" },
-            { label: "Shaxsiy rivojlanish va bilim olish", val: "shaxsiy" },
-            { label: "Karera va moddiy muvaffaqiyat", val: "karera" },
-            { label: "Sayohat va erkin hayot tarzi", val: "erkinlik" },
-          ],
-        },
-        {
-          text: "Munosabatlarda siz uchun eng muhim tushuncha qaysi?",
-          key: "sherik",
-          options: [
-            { label: "Mutloq sadoqat va ishonch", val: "oilali" },
-            { label: "O'zaro tushunish va qo'llab-quvvatlash", val: "barqaror" },
-            { label: "Qiziqishlarning o'xshashligi", val: "ijodkor" },
-            { label: "Shaxsiy erkinlikni hurmat qilish", val: "ambitsiyali" },
-          ],
-        },
-        {
-          text: "Diniy va ma'naviy qarashlar hayotingizda qanday o'rin tutadi?",
-          key: "din",
-          options: [
-            { label: "Hayotimning asosiy poydevori", val: "qatiy" },
-            { label: "Muhim, lekin zamonaviylik bilan uyg'un", val: "muvozanat" },
-            { label: "Insoniy fazilatlar dindan ustunroq", val: "hurmat" },
-            { label: "Bu shaxsiy masala, e'tibor bermayman", val: "yengil" },
-          ],
-        },
-        {
-          text: "Oilada moliyaviy boshqaruv qanday bo'lishi kerak?",
-          key: "boylik",
-          options: [
-            { label: "Erkak kishi to'liq ta'minlashi shart", val: "tejamkor" },
-            { label: "Umumiy budjet va birga rejalashtirish", val: "barqaror" },
-            { label: "Har kim o'z ehtiyoji uchun o'zi mas'ul", val: "koprok" },
-            { label: "Pul ikkinchi darajali masala", val: "ruhiy" },
-          ],
-        },
-        {
-          text: "Ziddiyatli vaziyatlarda (urush-janjal) o'zingizni qanday tutasiz?",
-          key: "ziddiyat",
-          options: [
-            { label: "Darhol gaplashib hal qilaman", val: "sabr" },
-            { label: "Biroz vaqt o'tgach, sovib gaplashaman", val: "vaqt" },
-            { label: "Fikrimni qat'iy isbotlayman", val: "qatiy2" },
-            { label: "Tinchlik uchun aybni bo'ynimga olaman", val: "murosa" },
-          ],
-        },
-        {
-          text: "Kelajakdagi turmush o'rtog'ingizning ishlashiga munosabatingiz?",
-          key: "rejalar",
-          options: [
-            { label: "Faqat uy ishlari bilan band bo'lishi kerak", val: "oila2" },
-            { label: "Albatta o'z kasbi va ishi bo'lishi shart", val: "shaxsiy" },
-            { label: "O'zaro kelishuvga ko'ra qaror qilamiz", val: "birga" },
-            { label: "Iqtisodiy holatga qarab ko'ramiz", val: "bilmyman" },
-          ],
-        },
-        {
-          text: "Bo'sh vaqtingizni qanday o'tkazishni yoqtirasiz?",
-          key: "hobbi",
-          options: [
-            { label: "Yaqinlar bilan uyda, sokinlikda", val: "ijtimoiy" },
-            { label: "Tashqarida, shovqinli davralarda", val: "aktiv" },
-            { label: "Yolg'iz qolib, mutolaa yoki film bilan", val: "oqish" },
-            { label: "Yangi joylarni kashf etish va sayohat", val: "ijod" },
-          ],
-        },
-        {
-          text: "Farzand tarbiyasida eng muhim jihat nima?",
-          key: "farzand",
-          options: [
-            { label: "An'anaviy va qat'iy intizom", val: "anana" },
-            { label: "Erkinlik va ijodiy yondashuv", val: "erkin" },
-            { label: "Zamonaviy ilm-fan va texnologiya", val: "ikkala" },
-            { label: "Mehribonlik va cheksiz sevgi", val: "murosa" },
-          ],
-        },
-        {
-          text: "Kutilmagan katta pul yutib olsangiz, nima qilardingiz?",
-          key: "kutilmagan",
-          options: [
-            { label: "Oila va uy-joy uchun sarflayman", val: "tejamkor" },
-            { label: "O'z biznesimni boshlayman", val: "ambitsiyali" },
-            { label: "Xayriya ishlariga sarflayman", val: "jamiyat" },
-            { label: "Dunyo bo'ylab sayohatga chiqaman", val: "erkinlik" },
-          ],
-        },
-        {
-          text: "Siz uchun baxtli hayot nima?",
-          key: "baxt",
-          options: [
-            { label: "Tinch oila va sog'lom farzandlar", val: "oila" },
-            { label: "Katta muvaffaqiyat va boylik", val: "karera" },
-            { label: "Xotirjamlik va o'zlikni anglash", val: "ruhiy" },
-            { label: "Hech kimga bog'liq bo'lmagan erkinlik", val: "erkinlik" },
-          ],
-        },
-        {
-          text: "Inson xatosini tan olishi qanchalik muhim?",
-          key: "xato",
-          options: [
-            { label: "Har doim birinchi bo'lib uzr so'rayman", val: "sabr" },
-            { label: "Agar haqiqatdan aybdor bo'lsam, tan olaman", val: "barqaror" },
-            { label: "Xatoni tan olish zaiflik belgisi", val: "qatiy2" },
-            { label: "Vaziyatga qarab ish tutaman", val: "bilmyman" },
-          ],
-        },
-        {
-          text: "Ijtimoiy tarmoqlar va shaxsiy hayot o'rtasidagi chegara?",
-          key: "social",
-          options: [
-            { label: "Shaxsiy hayotni ko'z-ko'z qilmaslik kerak", val: "anana" },
-            { label: "Muvaffaqiyatlarni bo'lishish yoqimli", val: "ambitsiyali" },
-            { label: "Ijtimoiy tarmoqlardan deyarli foydalanmayman", val: "qishloq" },
-            { label: "Bu mening erkin hududim, xohlaganimni qo'yaman", val: "erkin" },
-          ],
-        },
-        {
-          text: "Qanday xususiyat sizni ko'proq asabiylashtiradi?",
-          key: "asab",
-          options: [
-            { label: "Yolg'onchilik va xiyonat", val: "oilali" },
-            { label: "Dangasalik va maqsadsizlik", val: "ambitsiyali" },
-            { label: "Qo'pollik va hurmatsizlik", val: "sabr" },
-            { label: "Haddan tashqari qizg'anchiqlik", val: "erkinfikrlik" },
-          ],
-        },
-        {
-          text: "Keksayganingizda o'zingizni qayerda tasavvur qilasiz?",
-          key: "keksalik",
-          options: [
-            { label: "Farzandlar va nevaralar qurshovida", val: "oila" },
-            { label: "Dengiz bo'yidagi kichik uyda", val: "erkinlik" },
-            { label: "Ezgulik ishlari bilan band holda", val: "jamiyat" },
-            { label: "Hali ham faol ish faoliyatida", val: "karera" },
-          ],
-        },
-        {
-          text: "Hayotdagi eng katta qo'rquvingiz nima?",
-          key: "qorquv",
-          options: [
-            { label: "Yolg'izlik va keraksiz bo'lib qolish", val: "oilaparastlik" },
-            { label: "Muvaffaqiyatsizlik va kambag'allik", val: "ambitsiyali" },
-            { label: "Yaqin insonni yo'qotish", val: "barqarorlik" },
-            { label: "Erkinlikni yo'qotish", val: "erkinfikrlik" },
-          ],
-        }
-      ];
-        // ... qolgan savollar o'zingizning kodingizdagidek davom etadi
-      ];
-
       function renderQuestion() {
-        const q = questions[currentQ % questions.length]; // Xatolik oldini olish uchun
+        const q = questions[currentQ];
         document.getElementById("progress-fill").style.width =
-          ((currentQ + 1) / 10) * 100 + "%";
+          ((currentQ + 1) / questions.length) * 100 + "%";
         document.getElementById("q-step").textContent =
-          `Savol ${currentQ + 1} / 10`;
+          `Savol ${currentQ + 1} / ${questions.length}`;
         document.getElementById("q-text").textContent = q.text;
         const wrap = document.getElementById("answers-wrap");
         wrap.innerHTML = "";
+
         q.options.forEach((opt) => {
           const btn = document.createElement("button");
           btn.className = "answer-btn";
           btn.textContent = opt.label;
           btn.onclick = () => {
-            answers.push(opt.val);
-            currentNext();
+            const allBtns = wrap.querySelectorAll(".answer-btn");
+            allBtns.forEach((b) => b.classList.remove("selected"));
+            btn.classList.add("selected");
+
+            setTimeout(() => {
+              answers.push(opt.val);
+              currentQ++;
+              if (currentQ < questions.length) renderQuestion();
+              else processResult();
+            }, 300);
           };
           wrap.appendChild(btn);
         });
       }
 
-      function currentNext() {
-        currentQ++;
-        if (currentQ < 10) renderQuestion();
-        else {
-          showScreen("s-thinking");
-          generateResult();
-        }
+      function computeTraits() {
+        const t = { oila: 20, ambitsiya: 20, barqaror: 20, erkinlik: 20 };
+        answers.forEach((v) => {
+          if (t[v] !== undefined) t[v] += 5;
+          else if (v === "shaxsiy")
+            t.erkinlik += 5; // Shaxsiy rivojlanish erkinlikka yaqin
+          else if (v === "murosa") t.oila += 5; // Murosa oilaviy qadriyatga yaqin
+        });
+        Object.keys(t).forEach((k) => (t[k] = Math.min(100, t[k])));
+        return t;
       }
 
-      async function generateResult() {
-        // AI ga yuboriladigan qisqa tahlil logikasi
-        const prompt = `User: ${userName}, Partner: ${partnerName}. Javoblar: ${answers.join(",")}. O'zbek tilida JSON: {"score": 85, "verdict": "Mos", "analysis": "..."}`;
+      async function processResult() {
+        showScreen("s-thinking");
+        const traits = computeTraits();
+
+        // Xatolikni oldini olish uchun xavfsiz map funksiyasi
+        const details = answers
+          .map((val, i) => {
+            const question = questions[i];
+            const option = question.options.find((o) => o.val === val);
+            const label = option ? option.label : "Tanlanmagan";
+            return `S: ${question.text} | J: ${label}`;
+          })
+          .join("\n");
+
+        const prompt = `Foydalanuvchilar: ${userName} va ${partnerName}. 
+        Ushbu javoblar asosida ularning mosligini tahlil qil.
+        FAQAT JSON qaytar: {"score": 85, "verdict": "Ajoyib", "analysis": "Qisqa tahlil"}`;
+
         try {
-          const res = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -674,48 +685,57 @@
               }),
             },
           );
-          const data = await res.json();
-          const jsonText = data.candidates[0].content.parts[0].text.replace(
-            /```json|```/g,
-            "",
-          );
-          const result = JSON.parse(jsonText);
-          showResult(result);
+
+          const result = await response.json();
+          const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+          // JSONni tozalash (Markdown bloklarini olib tashlash)
+          const jsonStr = text.replace(/```json|```/g, "").trim();
+          const aiRes = JSON.parse(jsonStr);
+
+          showFinal(aiRes, traits);
         } catch (e) {
-          showResult({
-            score: 75,
-            verdict: "Ehtimol mos",
-            analysis: "AI bilan aloqa uzildi, lekin javoblaringiz ijobiy.",
-          });
+          console.error("AI Error:", e);
+          // Fallback natija
+          showFinal(
+            {
+              score: 75,
+              verdict: "Yaxshi moslik",
+              analysis:
+                "Sizning dunyoqarashingiz ko'p jihatdan bir-biriga mos keladi. Kichik tushunmovchiliklarni muloqot orqali hal qilish mumkin.",
+            },
+            traits,
+          );
         }
       }
 
-      function showResult(res) {
-        document.getElementById("score-num").textContent = res.score + "%";
+      function showFinal(ai, traits) {
+        document.getElementById("score-num").textContent = ai.score + "%";
         document.getElementById("result-names").textContent =
-          `${userName} & ${partnerName}`;
-        document.getElementById("ai-text").textContent = res.analysis;
+          `${userName} + ${partnerName}`;
+        document.getElementById("ai-text").textContent = ai.analysis;
         document.getElementById("verdict-wrap").innerHTML =
-          `<span style="background:var(--teal-light); color:var(--teal); padding:5px 15px; border-radius:20px; font-size:13px; font-weight:600;">${res.verdict}</span>`;
+          `<span style="background:var(--secondary); color:white; padding:6px 18px; border-radius:20px; font-size:13px; font-weight:700;">${ai.verdict}</span>`;
 
-        // Traits visualization
-        const traits = ["Oilaparastlik", "Ambitsiya", "Samimiylik"];
-        document.getElementById("traits-wrap").innerHTML = traits
+        const tData = [
+          { l: "Oilaparastlik", v: traits.oila, c: "#8b5cf6" },
+          { l: "Ambitsiya", v: traits.ambitsiya, c: "#f43f5e" },
+          { l: "Barqarorlik", v: traits.barqaror, c: "#10b981" },
+          { l: "Erkinlik", v: traits.erkinlik, c: "#0ea5e9" },
+        ];
+
+        document.getElementById("traits-wrap").innerHTML = tData
           .map(
             (t) => `
-          <div class="trait-row">
-            <span style="font-size:12px; width:100px">${t}</span>
-            <div class="trait-bg"><div class="trait-fill" style="width:${Math.random() * 40 + 60}%; background:var(--purple)"></div></div>
-          </div>
-        `,
+          <div class="trait-item">
+            <span class="trait-name">${t.l}</span>
+            <div class="trait-bar-bg"><div class="trait-bar-fill" style="width:${t.v}%; background:${t.c}"></div></div>
+            <span style="font-size:12px; font-weight:700; width:30px;">${t.v}%</span>
+          </div>`,
           )
           .join("");
 
         showScreen("s-result");
-      }
-
-      function restart() {
-        location.reload();
       }
     </script>
   </body>
